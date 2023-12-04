@@ -51,6 +51,7 @@ class HomePage extends HookWidget {
                       return _buildMenuList(
                         menus,
                         onTapMenu: (menu) => selectedMenu.value = menu,
+                        selectedMenu: selectedMenu.value
                       );
                     },
                     // ２回目以降は更新が走らないようにする
@@ -93,7 +94,7 @@ class HomePage extends HookWidget {
     );
   }
 
-  Widget _buildMenuList(List<Menu> menus, {Function(Menu menu)? onTapMenu}) {
+  Widget _buildMenuList(List<Menu> menus, {Function(Menu menu)? onTapMenu, Menu? selectedMenu}) {
     return ListView.builder(
       itemBuilder: (context, index) {
         final menu = menus[index];
@@ -104,6 +105,7 @@ class HomePage extends HookWidget {
           },
           title: Text(menu.name),
           subtitle: Text(menu.createdAt.toIso8601String()),
+          tileColor: selectedMenu?.id == menu.id ? Theme.of(context).primaryColor : null,
         );
       },
       itemCount: menus.length,
