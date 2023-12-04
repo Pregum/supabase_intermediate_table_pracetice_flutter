@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/allergen.dart';
-import 'package:supabase_intermediate_table_pracetice_flutter/allergen_util.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/menu.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/menus_util.dart';
 
@@ -11,7 +10,6 @@ class HomePage extends HookWidget {
   @override
   build(context) {
     final selectedMenu = useState<Menu?>(null);
-    final allMenus = useState<List<Menu>?>(null);
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +66,6 @@ class HomePage extends HookWidget {
                 ),
                 if (selectedMenu.value != null)
                   Expanded(
-                    // key: ValueKey(selectedMenu.value!.id),
                     child: FutureBuilder<List<Allergen>>(
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==

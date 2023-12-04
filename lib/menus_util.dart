@@ -23,10 +23,9 @@ Future<List<Allergen>> getAllergensById(int menuId) async {
   try {
     final response = await supabase
         .from('menus')
-        // .select<List<dynamic>>('*, allergens(id, type_name, created_at)')
-        .select('*, allergens (*)')
+        .select('*, allergens (id, type_name, created_at)')
+        // このidはmenusテーブルのidをしているので注意
         .eq('id', menuId);
-        // .eq('id', menuId);
       
     if (response.isEmpty) {
       return [];
