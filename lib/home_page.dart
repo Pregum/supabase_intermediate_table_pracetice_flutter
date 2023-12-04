@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_intermediate_table_pracetice_flutter/allergen.dart';
+import 'package:supabase_intermediate_table_pracetice_flutter/allergen_util.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/main.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/menu.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/menus_util.dart';
@@ -16,7 +18,7 @@ class HomePage extends StatelessWidget {
         children: [
           Container(
             height: 50,
-            color: Colors.red,
+            color: Theme.of(context).secondaryHeaderColor,
             child: const Row(
               children: [
                 Expanded(child: Center(child: Text('menu'))),
@@ -31,27 +33,23 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: MediaQuery.sizeOf(context).height * 0.5,
+          Expanded(
             child: Row(
               children: [
                 Expanded(
-                  child: Center(
-                    child: FutureBuilder<List<Menu>>(
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator.adaptive();
-                        }
-
-                        final menus = snapshot.data;
-                        if (menus == null) {
-                          return const Center(child: Text('No menus found'));
-                        }
-                        return _buildMenuList(menus);
-                      },
-                      future: getMenus(),
-                    ),
+                  child: FutureBuilder<List<Menu>>(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      }
+                        
+                      final menus = snapshot.data;
+                      if (menus == null) {
+                        return const Center(child: Text('No menus found'));
+                      }
+                      return _buildMenuList(menus);
+                    },
+                    future: getMenus(),
                   ),
                 ),
                 const SizedBox(
@@ -62,8 +60,21 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Container(
-                    color: Colors.blue,
+                  child: FutureBuilder<List<Allergen>>(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      }
+                  
+                      final allergens = snapshot.data;
+                      if (allergens == null) {
+                        return const Center(
+                            child: Text('No allergens found'));
+                      }
+                      return _buildAllergenList(allergens);
+                    },
+                    future: getAllergens(),
                   ),
                 )
               ],
@@ -74,9 +85,8 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _buildMenuList(List<Menu> menus) {
+  Widget _buildMenuList(List<Menu> menus) {
     return ListView.builder(
-      // shrinkWrap: true,
       itemBuilder: (context, index) {
         final menu = menus[index];
         return ListTile(
@@ -88,6 +98,23 @@ class HomePage extends StatelessWidget {
         );
       },
       itemCount: menus.length,
+    );
+  }
+
+  Widget _buildAllergenList(List<Allergen> allergens) {
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        final allergen = allergens[index];
+        return ListTile(
+          onTap: () {
+            debugPrint('tapped: ${allergen.typeName}');
+          },
+          leading: Text(allergen.id.toString()),
+          title: Text(allergen.typeName),
+          subtitle: Text(allergen.createdAt.toIso8601String()),
+        );
+      },
+      itemCount: allergens.length,
     );
   }
 }
