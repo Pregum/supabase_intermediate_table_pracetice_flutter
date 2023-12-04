@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/allergen.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/allergen_util.dart';
-import 'package:supabase_intermediate_table_pracetice_flutter/main.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/menu.dart';
 import 'package:supabase_intermediate_table_pracetice_flutter/menus_util.dart';
 
@@ -42,7 +41,7 @@ class HomePage extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator.adaptive();
                       }
-                        
+
                       final menus = snapshot.data;
                       if (menus == null) {
                         return const Center(child: Text('No menus found'));
@@ -62,15 +61,13 @@ class HomePage extends StatelessWidget {
                 Expanded(
                   child: FutureBuilder<List<Allergen>>(
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator.adaptive();
                       }
-                  
+
                       final allergens = snapshot.data;
                       if (allergens == null) {
-                        return const Center(
-                            child: Text('No allergens found'));
+                        return const Center(child: Text('No allergens found'));
                       }
                       return _buildAllergenList(allergens);
                     },
