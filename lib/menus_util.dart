@@ -9,7 +9,7 @@ Future<List<Menu>> getMenus() async {
     final menus = response;
     return menus.map(
       (menu) {
-        debugPrint(menu.toString());
+        // debugPrint(menu.toString());
         return Menu.fromJson(menu);
       },
     ).toList();
@@ -23,11 +23,21 @@ Future<List<Allergen>> getAllergensById(int menuId) async {
   try {
     final response = await supabase
         .from('menus')
-        .select<List<dynamic>>('id, allergens(id, type_name, created_at)')
+        // .select<List<dynamic>>('*, allergens(id, type_name, created_at)')
+        .select('*, allergens (*)')
         .eq('id', menuId);
-    final results = response.map(
+        // .eq('id', menuId);
+      
+    if (response.isEmpty) {
+      return [];
+    }
+
+    debugPrint('response: $response');
+    final record = response[0] as Map<String, dynamic>;
+    final allergens = record['allergens'] as List<dynamic>;
+    final results = allergens.map(
       (allergen) {
-        debugPrint(allergen.toString());
+        debugPrint('allergen: ${allergen.toString()}');
         return Allergen.fromJson(allergen);
       },
     ).toList();

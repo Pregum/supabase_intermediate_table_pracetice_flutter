@@ -11,6 +11,7 @@ class HomePage extends HookWidget {
   @override
   build(context) {
     final selectedMenu = useState<Menu?>(null);
+    final allMenus = useState<List<Menu>?>(null);
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +55,8 @@ class HomePage extends HookWidget {
                         onTapMenu: (menu) => selectedMenu.value = menu,
                       );
                     },
-                    future: getMenus(),
+                    // ２回目以降は更新が走らないようにする
+                    future: useMemoized(() => getMenus()),
                   ),
                 ),
                 const SizedBox(
@@ -66,7 +68,7 @@ class HomePage extends HookWidget {
                 ),
                 if (selectedMenu.value != null)
                   Expanded(
-                    key: ValueKey(selectedMenu.value!.id),
+                    // key: ValueKey(selectedMenu.value!.id),
                     child: FutureBuilder<List<Allergen>>(
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -75,14 +77,13 @@ class HomePage extends HookWidget {
                         }
 
                         final allergens = snapshot.data;
-                        if (allergens == null) {
+                        if (allergens == null || allergens.isEmpty) {
                           return const Center(
                               child: Text('No allergens found'));
                         }
                         return _buildAllergenList(allergens);
                       },
-                      // future: getAllergens(),
-                      future: getAllergensById(selectedMenu.value!.id)
+                      future: getAllergensById(selectedMenu.value!.id),
                     ),
                   )
                 else
