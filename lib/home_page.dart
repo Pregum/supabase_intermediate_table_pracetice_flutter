@@ -103,6 +103,7 @@ class HomePage extends HookWidget {
             debugPrint('tapped: ${menu.name}');
             onTapMenu?.call(menu);
           },
+          leading: Text(menu.id.toString()),
           title: Text(menu.name),
           subtitle: Text(menu.createdAt.toIso8601String()),
           tileColor: selectedMenu?.id == menu.id ? Theme.of(context).primaryColor : null,
