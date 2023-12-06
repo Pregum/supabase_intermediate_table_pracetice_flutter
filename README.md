@@ -1,18 +1,20 @@
 # supabase_intermediate_table_pracetice_flutter
 
-A new Flutter project.
+このプロジェクトは、[Supabase Advent Calendar 2023](https://adventar.org/calendars/9077) の6日目の記事のサンプル用リポジトリです。
 
-## 必要なもの
+## このリポジトリの起動に必要なもの
 
+* Flutterが動作する環境
+  * fvmもあると完璧です。
 * Supabaseプロジェクト
   * .envの設定に使用します。
-
 
 ## .envファイルの設定方法
 
 リポジトリ直下の`.env.example` ファイルを`.env`にリネームしてください。
 
-その後中身をSupabaseプロジェクトに記載されている値を入れてください。
+その後、[こちら](https://supabase.com/dashboard/project/_/settings/api)を参考にURLとAPI Keyを取得し、値を入れてください。
+
 
 ## Getting Started
 
